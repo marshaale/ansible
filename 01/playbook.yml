@@ -1,0 +1,14 @@
+---
+- name: Install Nginx & Start
+  hosts: all
+  become: true
+  tasks:
+    - name: Install
+      ansible.builtin.apt:
+        name: nginx
+        state: latest
+    - name: Start & Enable
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
