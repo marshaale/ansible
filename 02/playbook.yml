@@ -1,0 +1,14 @@
+---
+- name: Setup ufw
+  hosts: all
+  become: true
+  tasks:
+    - name: deny incoming
+      ansible.builtin.shell:
+        cmd: ufw default deny incoming
+    - name: allow outgoing
+      ansible.builtin.shell:
+        cmd: ufw default allow outgoing
+    - name: allow openssh
+      ansible.builtin.shell:
+        cmd: ufw allow openssh
