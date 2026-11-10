@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="VPS provisioning demo using Ansible, Ubuntu, and Nginx."
+    />
+    <title>Ansible VPS Demo</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+      }
+
+      .container {
+        max-width: 750px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #064e3b;
+        color: #6ee7b7;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: clamp(32px, 6vw, 52px);
+        margin-bottom: 16px;
+      }
+
+      h1 span {
+        color: #38bdf8;
+      }
+
+      .description {
+        color: #94a3b8;
+        line-height: 1.7;
+        margin-bottom: 35px;
+      }
+
+      .card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+
+      .card h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .services {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .service {
+        background: #334155;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .service span {
+        display: block;
+        color: #4ade80;
+        font-size: 12px;
+        margin-top: 7px;
+      }
+
+      footer {
+        color: #64748b;
+        font-size: 13px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="badge">✓ VPS Provisioning Successful</div>
+
+      <h1>Welcome to <span>My VPS</span></h1>
+
+      <p class="description">
+        This server was provisioned using Ansible. Automated configuration,
+        security hardening, and application runtime setup are part of this demo.
+      </p>
+
+      <section class="card">
+        <h2>Infrastructure Overview</h2>
+
+        <div class="services">
+          <div class="service">Ubuntu<span>Operating System</span></div>
+          <div class="service">Ansible<span>Automation</span></div>
+          <div class="service">Nginx<span>Web Server</span></div>
+          <div class="service">UFW<span>Firewall</span></div>
+          <div class="service">Fail2ban<span>Security</span></div>
+          <div class="service">Certbot<span>SSL / HTTPS</span></div>
+          <div class="service">Node.js<span>JavaScript Runtime</span></div>
+          <div class="service">Bun<span>JavaScript Runtime</span></div>
+          <div class="service">PM2<span>Process Manager</span></div>
+          <div class="service">Git<span>Version Control</span></div>
+        </div>
+      </section>
+
+      <p class="description">Automated with Ansible. Served with Nginx.</p>
+
+      <footer>VPS Provisioning Demo &copy; 2026</footer>
+    </main>
+  </body>
+</html>

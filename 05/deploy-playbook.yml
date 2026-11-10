@@ -1,0 +1,24 @@
+---
+- name: Deploy static website
+  hosts: all
+  become: true
+  remote_user: ubuntu
+  vars:
+    website_target_dir: /var/www/html
+  tasks:
+    - name: Ensure target directory exists
+      ansible.builtin.file:
+        path: "{{ website_target_dir }}"
+        state: directory
+    - name: Copy website files to target directory
+      ansible.builtin.copy:
+        src: /home/mdev/Documents/Github/apps/ansible/05/index.html
+        dest: "{{ website_target_dir }}/index.html"
+    - name: Set permissions for website files
+      ansible.builtin.file:
+        path: "{{ website_target_dir }}/index.html"
+        mode: '0644'
+    - name: Restart nginx to apply changes
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
