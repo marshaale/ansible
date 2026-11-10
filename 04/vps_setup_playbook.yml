@@ -1,0 +1,102 @@
+---
+- name: Provision VPS
+  hosts: all
+  become: true
+  remote_user: ubuntu
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: yes
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - git
+          - curl
+          - ufw
+          - fail2ban
+          - unzip
+          - python3-pip
+          - python3-venv
+          - nginx
+        state: present
+    - name: UFW allow SSH
+      ansible.builtin.ufw:
+        rule: allow
+        name: OpenSSH
+    - name: UFW allow HTTP and HTTPS
+      ansible.builtin.ufw:
+        rule: allow
+        name: "Nginx Full"
+    - name: Deny default incoming connections
+      ansible.builtin.ufw:
+        rule: deny
+        direction: in
+    - name: Allow default outgoing connections
+      ansible.builtin.ufw:
+        rule: allow
+        direction: out
+    - name: Enable UFW
+      ansible.builtin.ufw:
+        state: enabled
+    - name: Start and enable fail2ban
+      ansible.builtin.systemd:
+        name: fail2ban
+        state: started
+        enabled: yes
+    - name: Start nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: yes
+    - name: Install certbot & python3-certbot-nginx
+      ansible.builtin.apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+    - name: Install bun
+      become: false
+      ansible.builtin.shell: |
+        curl -fsSL https://bun.sh/install | bash
+      args:
+        creates: /home/ubuntu/.bun/bin/bun
+    - name: Install nodejs using nvm
+      become: false
+      ansible.builtin.shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install 26
+      args:
+        creates: /home/ubuntu/.nvm
+    - name: Install pm2 globally
+      become: false
+      ansible.builtin.shell: |
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        npm install -g pm2
+    - name: Configure timezone to UTC
+      ansible.builtin.command: timedatectl set-timezone UTC
+    - name: Configure locale to en_US.UTF-8
+      ansible.builtin.command: update-locale LANG=en_US.UTF-8
+    - name: Disable root login via SSH
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^PermitRootLogin"
+        line: "PermitRootLogin no"
+    - name: Disable password authentication via SSH
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^PasswordAuthentication"
+        line: "PasswordAuthentication no"
+    - name: Restart SSH service
+      ansible.builtin.systemd:
+        name: ssh
+        state: restarted
+    - name: Reboot the server
+      ansible.builtin.reboot:
+        reboot_timeout: 300

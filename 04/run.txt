@@ -1,0 +1,2 @@
+NOTE: FIRST INSTALL ansible
+ansible-playbook -i hosts.ini ./04/vps_setup_playbook.yml
